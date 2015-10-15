@@ -86,6 +86,8 @@ FastResearchInterface::FastResearchInterface(const char *InitFileName)
 	this->RobotStateString		=	new char[SIZE_OF_ROBOT_STATE_STRING];
 	//this->Interface			=	new char[MAX_INTERFACE_NAME_LENGTH];
  	this->Interface			=	NULL;
+
+	this->Port_Number 		= 	-1;
  	
 
 	memset((void*)(this->RobotName)				, 0x0	, MAX_ROBOT_NAME_LENGTH			* sizeof(char));

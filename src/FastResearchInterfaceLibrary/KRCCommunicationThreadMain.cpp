@@ -76,7 +76,10 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 	UDPSocket				*KRC;
 
 	if(ThisObject->Interface == NULL){
-	        KRC = new UDPSocket;
+		if (ThisObject->Port_Number == -1)
+	        	KRC = new UDPSocket;
+		else
+			KRC = new UDPSocket(ThisObject->Port_Number);
         }
         else{
                 KRC = new UDPSocket(ThisObject->Interface);

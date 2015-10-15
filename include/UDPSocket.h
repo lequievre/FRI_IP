@@ -95,6 +95,20 @@ public:
 	UDPSocket(void);
 
 //  ---------------------- Doxygen info ----------------------
+//! \fn UDPSocket(int a_port_number)
+//!
+//! \brief
+//! Constructor
+//!
+//! \details
+//! This constructor initializes the socket with a specific port number.
+//!
+//! \attention
+//! Calling of the constructor does \b not fulfill any real-time requirements.
+//  ----------------------------------------------------------
+	UDPSocket(int a_port_number);
+
+//  ---------------------- Doxygen info ----------------------
 //! \fn UDPSocket(char *Interface)
 //!
 //! \brief

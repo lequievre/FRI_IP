@@ -133,13 +133,19 @@ int FastResearchInterface::ReadInitFile(const char *InitFileName)
 			}
 			
 			if ( !stricmp (InitFileParser.GetSection(), "Network") )
-         {
-            if ( !stricmp (InitFileParser.GetName(), "Interface") )
-            {
-               this->Interface         =       new char[MAX_INTERFACE_NAME_LENGTH];
-               strcpy(this->Interface, InitFileParser.GetValue() );
-            }
-         }
+			 {
+				if ( !stricmp (InitFileParser.GetName(), "Interface") )
+				{
+					this->Interface         =       new char[MAX_INTERFACE_NAME_LENGTH];
+					strcpy(this->Interface, InitFileParser.GetValue() );
+					ParameterCount++;
+				}
+				if ( !stricmp (InitFileParser.GetName(), "Port") )
+				{
+					this->Port_Number = atoi( InitFileParser.GetValue() );
+					ParameterCount++;
+				}
+			 }
 		}
 	}
 	else

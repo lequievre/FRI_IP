@@ -1950,6 +1950,14 @@ protected:
 //  ----------------------------------------------------------
 	FRIDataSendToKRC				CommandData;
 
+//  ---------------------- Doxygen info ----------------------
+//! \var int Port_Number
+//!
+//! \brief
+//! Value of the port number
+//  ----------------------------------------------------------
+	int Port_Number;
+
 };	// class FastResearchInterface
 
 #endif

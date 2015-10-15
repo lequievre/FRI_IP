@@ -85,6 +85,31 @@ UDPSocket::UDPSocket(void)
 	this->Init();
 }
 
+
+// ****************************************************************
+// Constructor with parameter : port number
+//
+
+UDPSocket::UDPSocket(int a_port_number)
+{
+	this->ServerPortNumber	=	a_port_number;
+
+	// --------------------------------------------
+	//! \todo Remove this.
+	if (!ALL_DATA_SIZES_SENT_TO_KRC_ARE_OK)
+	{
+		printf("data structure size error!\n");
+		exit(1);
+	}
+	// --------------------------------------------
+
+#if defined(WIN32) || defined(WIN64) || defined(_WIN64)
+	StartWindowsSocket();
+#endif
+	this->Init();
+}
+
+
 // ****************************************************************
 // Constructor with parameter
 //
