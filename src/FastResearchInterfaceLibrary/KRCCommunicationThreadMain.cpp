@@ -72,6 +72,7 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 								,	ResultValue						=	0;
 
 	float							ZeroVector[NUMBER_OF_JOINTS];
+	FastResearchInterface			*ThisObject						=	(FastResearchInterface*)ObjectPointer;
 
 	UDPSocket 						*KRC;
 	
