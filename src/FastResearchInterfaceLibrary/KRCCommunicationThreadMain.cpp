@@ -87,8 +87,6 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 
 	FRIDataSendToKRC				LocalCommandData;
 
-	FastResearchInterface			*ThisObject						=	(FastResearchInterface*)ObjectPointer;
-
 	memset(ZeroVector, 0x0, NUMBER_OF_JOINTS * sizeof(float));
 	
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
