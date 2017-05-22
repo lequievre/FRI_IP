@@ -26,8 +26,8 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
 
-find_package(Xenomai 2.6 COMPONENTS POSIX VXWORKS REQUIRED)
-message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
+#find_package(Xenomai 2.6 COMPONENTS POSIX VXWORKS REQUIRED)
+#message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
 
 # FRIL version. Defined here but not exported to header files, because it's already defined there 
 set( FRIL_VERSION 1.2 )
@@ -54,7 +54,7 @@ find_package(Threads REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." ON)
+option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." OFF)
 
 if(ENABLE_XENO_POSIX AND Xenomai_POSIX_FOUND)
    set(FRIL_RT TRUE)
