@@ -67,6 +67,7 @@
 //
 UDPSocket::UDPSocket(void)
 {
+	this->ServerIP 	=  NULL;
 	this->ServerPortNumber	=	SERVER_PORT;
 
 	// --------------------------------------------
@@ -86,10 +87,39 @@ UDPSocket::UDPSocket(void)
 
 
 // ****************************************************************
+// Constructor with parameter
+//
+UDPSocket::UDPSocket(char *ServerIP, int ServerPortNumber)
+{
+	this->ServerPortNumber	=	ServerPortNumber;
+
+	this->ServerIP 	= 	new char[sizeof(ServerIP)];
+	strcpy(this->ServerIP, ServerIP);
+	
+	// --------------------------------------------
+	//! \todo Remove this.
+	if (!ALL_DATA_SIZES_SENT_TO_KRC_ARE_OK)
+	{
+		printf("data structure size error!\n");
+		exit(1);
+	}
+	// --------------------------------------------
+
+#if defined(WIN32) || defined(WIN64) || defined(_WIN64)
+	StartWindowsSocket();
+#endif
+	this->Init();
+}
+
+// ****************************************************************
 // Destructor
 //
 UDPSocket::~UDPSocket()
 {
+  if(this->ServerIP != NULL)
+  {
+	  delete this->ServerIP;
+  }
   this->Close();
 }
 

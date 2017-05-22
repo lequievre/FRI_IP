@@ -73,7 +73,14 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 
 	float							ZeroVector[NUMBER_OF_JOINTS];
 
-	UDPSocket 						KRC;
+	UDPSocket 						*KRC;
+	
+	if (ThisObject->ServerIP == NULL) {
+	        KRC = new UDPSocket;
+	}
+	else {
+			KRC = new UDPSocket(ThisObject->ServerIP, ThisObject->ServerPortNumber);
+	}
 
 	FRIDataReceivedFromKRC 			LocalReadData;
 
@@ -97,7 +104,7 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 	for(;;)
 	{
 		// receive data from the KRC unit
-		ResultValue	=	KRC.ReceiveFRIDataFromKRC(&LocalReadData);
+		ResultValue	=	KRC->ReceiveFRIDataFromKRC(&LocalReadData);
 
 		if (ResultValue != 0)
 		{
@@ -134,7 +141,7 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 		pthread_cond_broadcast(&(ThisObject->CondVarForDataReceptionFromKRC));
 
 		// send data to KRC unit
-		ResultValue						=	KRC.SendFRIDataToKRC(&LocalCommandData);
+		ResultValue						=	KRC->SendFRIDataToKRC(&LocalCommandData);
 
 		if (ResultValue != 0)
 		{

@@ -96,6 +96,21 @@ public:
 	
 	
 //  ---------------------- Doxygen info ----------------------
+//! \fn UDPSocket(char *Interface, int ServerPortNumber)
+//!
+//! \brief
+//! Constructor
+//!
+//! \details
+//! This constructor initializes the socket setting the ServerIP and ServerPortNumber
+//!
+//! \attention
+//! Calling of the constructor does \b not fulfill any real-time requirements.
+//  ----------------------------------------------------------
+	UDPSocket(char *ServerIP, int ServerPortNumber);	
+	
+	
+//  ---------------------- Doxygen info ----------------------
 //! \fn ~UDPSocket(void)
 //!
 //! \brief
@@ -227,6 +242,15 @@ private:
 //! Contains the integer server port number
 //  ----------------------------------------------------------	
 	int ServerPortNumber;
+	
+	
+//  ---------------------- Doxygen info ----------------------
+//! \var ServerIP
+//!
+//! \brief
+//! Contains the ServerIP
+//  ----------------------------------------------------------	
+	char *ServerIP;
 	
 //  ---------------------- Doxygen info ----------------------
 //! \var IPAddressOfKRCUnit
