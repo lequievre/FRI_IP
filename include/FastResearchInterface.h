@@ -1720,6 +1720,26 @@ protected:
 
 
 //  ---------------------- Doxygen info ----------------------
+//! \var char *Interface
+//!
+//! \brief
+//! A pointer to an array of \c char values containing the ServerIP adress 
+//!
+//! \sa sec_InitFile
+//  ----------------------------------------------------------
+	char					*ServerIP;
+	
+//  ---------------------- Doxygen info ----------------------
+//! \var int  ServerPortNumber
+//!
+//! \brief
+//! A int to define the server port number
+//!
+//! \sa sec_InitFile
+//  ----------------------------------------------------------
+	int					ServerPortNumber;
+	
+//  ---------------------- Doxygen info ----------------------
 //! \var char *RobotStateString
 //!
 //! \brief
