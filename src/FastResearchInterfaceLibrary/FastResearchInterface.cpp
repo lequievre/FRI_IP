@@ -70,6 +70,8 @@
 //
 FastResearchInterface::FastResearchInterface(const char *InitFileName)
 {
+	printf("\nFastResearchInterface -> Start !\n");
+
 	int					ParameterCount						=	0
 					,	FuntionResult						=	0;
 
