@@ -79,7 +79,9 @@ int main(int argc, char *argv[])
 							,	JointValuesInRad[NUMBER_OF_JOINTS]
 		 					,	InitialJointValuesInRad[NUMBER_OF_JOINTS];
 
-	LWRJointPositionController	*Robot;
+	printf("\nCoucou !");
+
+	/*LWRJointPositionController	*Robot;
 
 	Robot	=	new LWRJointPositionController("/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init");
 
@@ -137,7 +139,9 @@ int main(int argc, char *argv[])
 
 	fprintf(stdout, "Deleting the object...\n");
 	delete Robot;
-	fprintf(stdout, "Object deleted...\n");
+	fprintf(stdout, "Object deleted...\n");*/
+
+
 
 	return(EXIT_SUCCESS);
 }
