@@ -94,9 +94,9 @@ FastResearchInterface::FastResearchInterface(const char *InitFileName)
 
 	ParameterCount	=	this->ReadInitFile(InitFileName);
 
-	printf("\nFastResearchInterface -> ParameterCount = %d\n",ParameterCount);
+	/*printf("\nFastResearchInterface -> ParameterCount = %d\n",ParameterCount);
 	printf("\nFastResearchInterface -> ServerIP = %s\n",this->ServerIP);
-	printf("\nFastResearchInterface -> ServerPortNumber = %d\n",this->ServerPortNumber);
+	printf("\nFastResearchInterface -> ServerPortNumber = %d\n",this->ServerPortNumber);*/
 
 	if (ParameterCount == -1)
 	{
