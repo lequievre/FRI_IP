@@ -92,6 +92,10 @@ FastResearchInterface::FastResearchInterface(const char *InitFileName)
 
 	ParameterCount	=	this->ReadInitFile(InitFileName);
 
+	printf("\nFastResearchInterface -> ParameterCount = %d\n",ParameterCount);
+	printf("\nFastResearchInterface -> ServerIP = %s\n",this->ServerIP);
+	printf("\nFastResearchInterface -> ServerPortNumber = %d\n",this->ServerPortNumber);
+
 	if (ParameterCount == -1)
 	{
 		fprintf(stderr, "FastResearchInterface::FastResearchInterface(): ERROR, an initialization file name is required! QUITTING.\n");
