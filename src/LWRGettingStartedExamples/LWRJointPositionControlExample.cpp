@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
 	LWRJointPositionController	*Robot;
 
-	Robot	=	new LWRJointPositionController("/home/lwrcontrol/etc/980039-FRI-Driver.init");
+	Robot	=	new LWRJointPositionController("/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init");
 
 	fprintf(stdout, "RobotJointPositionController object created. Starting the robot...\n");
 
