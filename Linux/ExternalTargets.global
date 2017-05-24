@@ -65,14 +65,14 @@ all:
 	@echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	@echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	@echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-################################################### Uncommment from here
-#make -k all_debug_x64
-#@echo $(LINE2)
-#@echo $(LINE2)
-#@echo $(LINE2)
-#@echo $(LINE2)	
-#make -k all_release_x64
-################################################### to here to build for X64.
+# ################################################## Uncommment from here
+	make -k all_debug_x64
+	@echo $(LINE2)
+	@echo $(LINE2)
+	@echo $(LINE2)
+	@echo $(LINE2)
+	make -k all_release_x64
+# ################################################## to here to build for X64.
 	@echo $(LINE2)	
 	@echo This is the end of the build process.
 	@echo $(LINE2)	
@@ -122,12 +122,12 @@ clean:
 	@echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 	@echo XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ################################################### Uncommment from here
-#make -k clean_debug_x64
-#@echo $(LINE2)
-#@echo $(LINE2)
-#@echo $(LINE2)
-#@echo $(LINE2)		
-#make -k clean_release_x64
+	make -k clean_debug_x64
+	@echo $(LINE2)
+	@echo $(LINE2)
+	@echo $(LINE2)
+	@echo $(LINE2)		
+	make -k clean_release_x64
 ################################################### to here to build for X64.
 	@echo $(LINE2)	
 	@echo This is the end of the clean up process.
