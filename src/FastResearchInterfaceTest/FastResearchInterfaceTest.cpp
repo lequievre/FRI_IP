@@ -108,7 +108,9 @@ int main(int argc, char *argv[])
 #ifdef __LINUX__
 	fprintf(stdout, "You may need superuser permission to run this program.\n");
 	fflush(stdout);
-	FRI = new FastResearchInterface("/home/torsten/etc/980039-FRI-Driver.init");
+	FRI = new FastResearchInterface("/home/lequievre/Projets/MACCS/Code_Plateforme_Sigma/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init");
+
+
 #endif
 
 #ifdef __MACOS__

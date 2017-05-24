@@ -65,6 +65,10 @@
 //
 int FastResearchInterface::ReadInitFile(const char *InitFileName)
 {
+
+	fprintf(stdout, "\ReadInitFile -> Start !\n");
+	fflush(stdout);
+
 	unsigned int				ParameterCount				=	0;
 
 	InitializationFileEntry		InitFileParser(InitFileName);

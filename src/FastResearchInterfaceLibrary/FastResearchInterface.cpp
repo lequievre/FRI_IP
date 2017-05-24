@@ -70,7 +70,9 @@
 //
 FastResearchInterface::FastResearchInterface(const char *InitFileName)
 {
-	printf("\nFastResearchInterface -> Start !\n");
+
+	fprintf(stdout, "\nFastResearchInterface -> Start !\n");
+	fflush(stdout);
 
 	int					ParameterCount						=	0
 					,	FuntionResult						=	0;
@@ -94,9 +96,13 @@ FastResearchInterface::FastResearchInterface(const char *InitFileName)
 
 	ParameterCount	=	this->ReadInitFile(InitFileName);
 
-	/*printf("\nFastResearchInterface -> ParameterCount = %d\n",ParameterCount);
-	printf("\nFastResearchInterface -> ServerIP = %s\n",this->ServerIP);
-	printf("\nFastResearchInterface -> ServerPortNumber = %d\n",this->ServerPortNumber);*/
+	fprintf(stdout, "\nFastResearchInterface -> ParameterCount = %d\n",ParameterCount);
+	fflush(stdout);
+	fprintf(stdout, "\nFastResearchInterface -> ServerIP = %s\n",this->ServerIP);
+	fflush(stdout);
+	fprintf(stdout, "\nFastResearchInterface -> ServerPortNumber = %d\n",this->ServerPortNumber);
+	fflush(stdout);
+
 
 	if (ParameterCount == -1)
 	{
@@ -258,6 +264,7 @@ FastResearchInterface::FastResearchInterface(const char *InitFileName)
 											,	this->LoggingPath
 											,	this->LoggingFileName
 											,	this->NumberOfLoggingFileEntries);
+
 }
 
 
