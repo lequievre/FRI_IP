@@ -55,8 +55,10 @@
 #include <errno.h>
 #include <OSAbstraction.h>
 #include <FastResearchInterfaceTest.h>
+#include <ctype.h> // need for toupper
 
-
+#define RIGHT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init"
+#define LEFT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49939-FRI-Driver.init"
 
 #ifndef PI
 #define PI	3.1415926535897932384626433832795
@@ -66,11 +68,36 @@
 
 #define SIZE_OF_TRANSFER_STRING					32
 
+char* robotType;
+char *robotTypeUpper;
+
 //*******************************************************************************************
 // main()
 
+char * strtoupper( char * dest, const char * src ) {
+    char * result = dest;
+    while( *dest++ = toupper( *src++ ) );
+    return result;
+}
+
 int main(int argc, char *argv[])
 {
+
+	if (argc > 1)
+	{
+		robotType = strdup(argv[1]);
+		robotTypeUpper = strdup(argv[1]);
+		strtoupper(robotTypeUpper,robotType);
+	}
+	else
+	{
+		printf("\nUsage = ./exe left|right\n");
+		return -1;
+	}
+
+	printf("\nYou choose to work with the %s arm\n",robotTypeUpper);
+
+
 	bool					Run							=	true
 						,	StartRobotCalled			=	false;
 
@@ -108,7 +135,10 @@ int main(int argc, char *argv[])
 #ifdef __LINUX__
 	fprintf(stdout, "You may need superuser permission to run this program.\n");
 	fflush(stdout);
-	FRI = new FastResearchInterface("/home/lequievre/Projets/MACCS/Code_Plateforme_Sigma/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init");
+	if (strcmp(robotTypeUpper,"RIGHT") == 0)
+		FRI = new FastResearchInterface(RIGHT_INIT_FILE);
+	else
+		FRI = new FastResearchInterface(LEFT_INIT_FILE);
 
 
 #endif
@@ -208,6 +238,8 @@ int main(int argc, char *argv[])
 			}
 
 			ResultValue	=	FRI->StartRobot(ControlScheme);
+
+			printf("\nResultValue = %d\n",ResultValue);
 
 			if (ResultValue != EOK)
 			{

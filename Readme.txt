@@ -31,3 +31,16 @@ and from line 124 :
 make clean all
 
 Becareful -> the directories x64 and x86 inside the Linux directory should exist !
+
+Remarks:
+=======
+
+To separate the 2 kuka arms (right and left) we have to set a specific ip address in the Dlrrc.ini file KRC computer side.
+This file is in the c:\krc\ROBOTER\INIT directory.
+Once this file updated we need to reboot the KRC computer.
+
+For the right arm, we set the IP address to 192.168.100.120
+For the left one, we set the IP address to 192.168.100.102
+
+Of course, we have to take care of that in our script net file (In the ROS workspace -> ~/projects/ros_sigma_platform_fri_ws/src/script_net/net_kuka_sigma.sh)
+

@@ -54,6 +54,7 @@
 #include <string.h>
 #include <errno.h>
 #include <math.h>
+#include <ctype.h> // need for toupper
 
 
 #ifndef NUMBER_OF_JOINTS
@@ -62,12 +63,39 @@
 
 #define RUN_TIME_IN_SECONDS		10.0
 
+#define RIGHT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init"
+#define LEFT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49939-FRI-Driver.init"
+
+
+char* robotType;
+char *robotTypeUpper;
 
 //*******************************************************************************************
 // main()
-//
+
+char * strtoupper( char * dest, const char * src ) {
+    char * result = dest;
+    while( *dest++ = toupper( *src++ ) );
+    return result;
+}
+
 int main(int argc, char *argv[])
 {
+
+	if (argc > 1)
+	{
+		robotType = strdup(argv[1]);
+		robotTypeUpper = strdup(argv[1]);
+		strtoupper(robotTypeUpper,robotType);
+	}
+	else
+	{
+		printf("\nUsage = ./exe left|right\n");
+		return -1;
+	}
+
+	printf("\nYou choose to work with the %s arm\n",robotTypeUpper);
+
 	unsigned int				CycleCounter	=	0
 							,	i				=	0;
 
@@ -81,7 +109,10 @@ int main(int argc, char *argv[])
 
 	LWRJointImpedanceController	*Robot;
 
-	Robot	=	new LWRJointImpedanceController("/home/lwrcontrol/etc/980039-FRI-Driver.init");
+	if (strcmp(robotTypeUpper,"RIGHT") == 0)
+		Robot	=	new LWRJointImpedanceController(RIGHT_INIT_FILE);
+	else
+		Robot	=	new LWRJointImpedanceController(LEFT_INIT_FILE);
 
 	fprintf(stdout, "RobotJointImpedanceController object created. Starting the robot...\n");
 

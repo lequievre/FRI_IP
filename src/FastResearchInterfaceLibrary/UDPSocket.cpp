@@ -46,7 +46,8 @@
 
 
 #include "UDPSocket.h"
- #include <OSAbstraction.h>
+#include <OSAbstraction.h>
+#include <cstring>
 
 #if defined(WIN32) || defined(WIN64) || defined(_WIN64)
 #include <winsock2.h>
@@ -93,8 +94,13 @@ UDPSocket::UDPSocket(char *ServerIP, int ServerPortNumber)
 {
 	this->ServerPortNumber	=	ServerPortNumber;
 
-	this->ServerIP 	= 	new char[sizeof(ServerIP)];
+	this->ServerIP 	= 	new char[strlen(ServerIP)+1];
 	strcpy(this->ServerIP, ServerIP);
+
+	fprintf(stdout, "\nUDPSocket -> ServerPortNumber = %d\n",this->ServerPortNumber);
+	fprintf(stdout, "\nUDPSocket -> ServerIP = %s\n",this->ServerIP);
+	fflush(stdout);
+
 	
 	// --------------------------------------------
 	//! \todo Remove this.
@@ -143,7 +149,7 @@ void UDPSocket::Init(void)
 {
 	struct sockaddr_in		KRCAddress;
 	
-	memset(&KRCAddress					, 0,	sizeof(KRCAddress						));
+	memset(&KRCAddress			, 0,	sizeof(KRCAddress			));
 	memset(&this->IPAddressOfKRCUnit	, 0,	sizeof(this->IPAddressOfKRCUnit		));
 	
 	UDPSocketNumber = socket(PF_INET, SOCK_DGRAM, 0);
@@ -157,7 +163,7 @@ void UDPSocket::Init(void)
 
 	KRCAddress.sin_family		=	AF_INET;
 	KRCAddress.sin_addr.s_addr	=	htonl(INADDR_ANY);
-	KRCAddress.sin_port			=	htons(ServerPortNumber);
+	KRCAddress.sin_port		=	htons(this->ServerPortNumber);
 
 	if (bind(UDPSocketNumber, (struct sockaddr *)&KRCAddress, sizeof(KRCAddress)) < 0)
 	{
@@ -166,6 +172,12 @@ void UDPSocket::Init(void)
 		this->Close();
 		exit(EXIT_FAILURE);
 	}
+
+
+	this->IPAddressOfKRCUnit.sin_family		=	AF_INET;
+	this->IPAddressOfKRCUnit.sin_addr.s_addr	=	inet_addr(this->ServerIP);
+	this->IPAddressOfKRCUnit.sin_port		=	htons(this->ServerPortNumber);
+
 }
 
 
@@ -190,6 +202,7 @@ int UDPSocket::ReceiveFRIDataFromKRC(FRIDataReceivedFromKRC *DataPackageFromKRC)
 			fprintf(stderr, "ERROR: Data size incorrect (received: %d, expected %d)\n", DataReceived, sizeof(FRIDataReceivedFromKRC));
 			fflush(stderr);
 		}
+
 	}
 	memset(DataPackageFromKRC, 0, sizeof(FRIDataReceivedFromKRC));
 	
@@ -204,7 +217,7 @@ int UDPSocket::SendFRIDataToKRC(const FRIDataSendToKRC *DataPackageToBeSentToKRC
 {
 	int NumberOfSentBytes	=	0;
 
-	this->IPAddressOfKRCUnit.sin_family = AF_INET;
+	this->IPAddressOfKRCUnit.sin_family		=	AF_INET;
 
 	if	(	(UDPSocketNumber					>=	0	)
 		&&	(ntohs(IPAddressOfKRCUnit.sin_port)	!=	0	)	)
@@ -265,12 +278,14 @@ int UDPSocket::ReceiveUDPPackage(const int UDPSocketNumber, FRIDataReceivedFromK
 #endif
 #endif
 
+
 		NumberOfReceivedBytes	=	recvfrom(		UDPSocketNumber
 												,	(char *)ReceivedData
 												,	sizeof(FRIDataReceivedFromKRC)
 												,	0
 												,	(struct sockaddr *)&IPAddressOfKRCUnit
 												,	&SizeOfSocketAddressInBytes);
+
 
 		return (NumberOfReceivedBytes);
 	}

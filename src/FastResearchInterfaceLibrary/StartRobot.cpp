@@ -66,6 +66,9 @@ int FastResearchInterface::StartRobot(		const unsigned int &ControlMode
 	float				CommandValues[2 * NUMBER_OF_JOINTS]
 					,	InitialSystemTimeValue	=	GetSystemTimeInSeconds(true);
 
+	fprintf(stdout, "\nStartRobot -> this->GetFRIMode() = %d\n",this->GetFRIMode());
+	fflush(stdout);
+
 	memset(CommandValues, 0x0, 2 * NUMBER_OF_JOINTS * sizeof(float));
 
 	if (this->GetFRIMode() == FRI_STATE_OFF)
@@ -84,6 +87,9 @@ int FastResearchInterface::StartRobot(		const unsigned int &ControlMode
 		}
 	}
 
+	fprintf(stdout, "\nStartRobot -> not State OFF !!\n");
+	fflush(stdout);
+
 	if (this->GetFRIMode() == FRI_STATE_CMD)
 	{
 		if (this->CurrentControlScheme	== ControlMode)
@@ -96,6 +102,9 @@ int FastResearchInterface::StartRobot(		const unsigned int &ControlMode
 			this->StopRobot();
 		}
 	}
+
+	fprintf(stdout, "\nStartRobot -> not State CMD !!\n");
+	fflush(stdout);
 
 	if (this->GetKRLIntValue(15) == 20)
 	{
