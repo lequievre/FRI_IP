@@ -1,6 +1,26 @@
 Laurent LEQUIEVRE
+laurent.lequievre@uca.fr
+
+Juan Antonio Corrales Ramon
+Juan-Antonio.Corrales-Ramon@sigma-clermont.fr
+
+Youcef Mezouar
+youcef.mezouar@sigma-clermont.fr
+
 Institut Pascal
+MACCS Team (http://ip.univ-bpclermont.fr/index.php/fr/maccs)
 UMR6602 Clermont Ferrand
+
+This git project contains a fork of FRI (Fast Research Interface library of Standford http://cs.stanford.edu/people/tkr/fri/html/) to be used with a specific port and IP address.
+To use it, just add a new 'Network' entry in the 'init' file, like this :
+
+[Network]
+#Put your network IP here
+#then, the interface will be choosed
+ServerIP=192.168.100.253
+ServerPortNumber=49938
+
+Our platform needs these modifications because we have 2 kuka lwr4 + arms that have a port and a specific ip address.
 
 1- to compile with ubuntu 14.04 we need to install :
 sudo apt-get install g++-multilib
@@ -47,7 +67,6 @@ Linux/x64/debug/lib
 3- go to Linux directory and do :
 make clean all
 
-Becareful -> the directories x64 and x86 inside the Linux directory should exist !
 
 Remarks:
 =======
