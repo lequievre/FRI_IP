@@ -94,7 +94,8 @@ int FastResearchInterface::StopRobot(void)
 
 		DataTelegramCounter++;
 	}
-
+	fprintf(stdout,"Monitor mode");
+	fflush(stdout);
 	// wait until the KRC unit ready for the reception of the next command
 	while (		((double)DataTelegramCounter * this->CycleTime	<	TIMEOUT_VALUE_IN_SECONDS_TO_REACH_MONITOR_MODE)
 			&&	(this->GetKRLIntValue(15) != 10)	)
@@ -109,6 +110,9 @@ int FastResearchInterface::StopRobot(void)
 
 		DataTelegramCounter++;
 	}
+
+	fprintf(stdout,"Ready for new commands");
+	fflush(stdout);
 
 	if ((double)DataTelegramCounter * this->CycleTime	<	TIMEOUT_VALUE_IN_SECONDS_TO_REACH_MONITOR_MODE)
 	{

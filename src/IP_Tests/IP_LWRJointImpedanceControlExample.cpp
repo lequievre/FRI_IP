@@ -118,8 +118,8 @@ int main(int argc, char *argv[])
 
 	for (i = 0; i < NUMBER_OF_JOINTS; i++)
 	{
-		CommandedStiffness	[i]	=	(float)200.0;
-		CommandedDamping	[i]	=	(float)0.7;
+		CommandedStiffness	[i]	=	(float) 0.0;//(float)200.0;
+		CommandedDamping	[i]	=	(float) 0.0;//(float)0.7;
 		CommandedTorquesInNm[i]	=	(float)0.0;
 	}
 
@@ -156,7 +156,15 @@ int main(int argc, char *argv[])
 
 		Robot->GetMeasuredJointTorques		(MeasuredTorquesInNm	);
 		Robot->GetMeasuredJointPositions	(JointValuesInRad		);
-
+		fprintf(stdout,"\n");
+		fflush(stdout);
+		for (int i=0; i < NUMBER_OF_JOINTS; i++)
+		{
+			fprintf(stdout,"J[%d]=%f;",JointValuesInRad[i]);
+			fflush(stdout);
+		}
+		fprintf(stdout,"\n");
+		fflush(stdout);
 		Robot->SetCommandedJointPositions	(JointValuesInRad);
 		Robot->SetCommandedJointStiffness	(CommandedStiffness		);
 		Robot->SetCommandedJointDamping		(CommandedDamping		);
