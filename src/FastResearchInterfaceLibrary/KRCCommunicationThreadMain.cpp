@@ -100,6 +100,7 @@ void* FastResearchInterface::KRCCommunicationThreadMain(void *ObjectPointer)
 
 	pthread_cond_signal(&(ThisObject->CondVarForThreadCreation));
 
+
 	for(;;)
 	{
 		// receive data from the KRC unit
