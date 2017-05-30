@@ -27,6 +27,23 @@ and from line 124 :
 	make -k clean_release_x64
 ################################################### to here to build for X64.
 
+2bis- to compile on linux system, these directories must imperatively exist :
+Linux/x86/release/obj
+Linux/x86/release/bin
+Linux/x86/release/lib
+
+Linux/x86/debug/obj
+Linux/x86/debug/bin
+Linux/x86/debug/lib
+
+Linux/x64/release/obj
+Linux/x64/release/bin
+Linux/x64/release/lib
+
+Linux/x64/debug/obj
+Linux/x64/debug/bin
+Linux/x64/debug/lib
+
 3- go to Linux directory and do :
 make clean all
 
