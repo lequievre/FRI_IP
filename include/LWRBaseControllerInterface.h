@@ -123,7 +123,7 @@ public:
 //!
 //! \copydetails FastResearchInterface::~FastResearchInterface()
 //  ----------------------------------------------------------
-	virtual ~LWRBaseControllerInterface(void)
+	 ~LWRBaseControllerInterface(void)
 	{
 		delete this->FRI;
 	}

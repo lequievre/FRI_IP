@@ -1,15 +1,15 @@
 //  ---------------------- Doxygen info ----------------------
-//! \file LWRJointImpedanceControlExample.cpp
+//! \file LWRJointPositionControlExample.cpp
 //!
 //! \brief
-//! Sample application for the class LWRJointImpedanceController
+//! Sample application for the class LWRJointPositionController
 //!
 //! \details
 //! This simple application feature a sample of how to use the
-//! joint impedance controller of the KUKA Fast Research Interface
+//! joint position controller of the KUKA Fast Research Interface
 //! for the Light-Weight Robot IV. For details about the actual
-//! interface class (i.e., class LWRJointImpedanceController), please
-//! refer to the file LWRJointImpedanceController.h.
+//! interface class (i.e., class LWRJointPositionController), please
+//! refer to the file LWRJointPositionController.h.
 //!
 //! \date December 2014
 //!
@@ -48,7 +48,7 @@
 //  ----------------------------------------------------------
 
 
-#include <LWRJointImpedanceController.h>
+#include <LWRJointPositionController.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -61,7 +61,10 @@
 #define NUMBER_OF_JOINTS			7
 #endif
 
-#define RUN_TIME_IN_SECONDS		30.0
+
+#ifndef PI
+#define PI	3.1415926535897932384626433832795
+#endif
 
 #define RIGHT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init"
 #define LEFT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49939-FRI-Driver.init"
@@ -81,7 +84,7 @@ char * strtoupper( char * dest, const char * src ) {
 
 int main(int argc, char *argv[])
 {
-
+	
 	if (argc > 1)
 	{
 		robotType = strdup(argv[1]);
@@ -95,37 +98,27 @@ int main(int argc, char *argv[])
 	}
 
 	printf("\nYou choose to work with the %s arm\n",robotTypeUpper);
-
-	unsigned int				CycleCounter	=	0
+	
+	int							ResultValue		=	0
 							,	i				=	0;
 
-	int							ResultValue		=	0;
+	float						FunctionValue	=	0.0
+							,	LoopVariable	=	0.0
+							,	JointValuesInRad[NUMBER_OF_JOINTS]
+		 					,	InitialJointValuesInRad[NUMBER_OF_JOINTS];
 
-	float						CommandedTorquesInNm	[NUMBER_OF_JOINTS]
-		 					,	CommandedStiffness		[NUMBER_OF_JOINTS]
-		 					,	CommandedDamping		[NUMBER_OF_JOINTS]
-		 					,	MeasuredTorquesInNm		[NUMBER_OF_JOINTS]
-		 					,	JointValuesInRad		[NUMBER_OF_JOINTS];
+	printf("\nBefore new LWRJointPositionController !\n");
 
-	LWRJointImpedanceController	*Robot;
-
+	LWRJointPositionController	*Robot;
+	
 	if (strcmp(robotTypeUpper,"RIGHT") == 0)
-		Robot	=	new LWRJointImpedanceController(RIGHT_INIT_FILE);
+		Robot	=	new LWRJointPositionController(RIGHT_INIT_FILE);
 	else
-		Robot	=	new LWRJointImpedanceController(LEFT_INIT_FILE);
+		Robot	=	new LWRJointPositionController(LEFT_INIT_FILE);
 
-	fprintf(stdout, "RobotJointImpedanceController object created. Starting the robot...\n");
+	printf("\nAfter new LWRJointPositionController !\n");
 
-	for (i = 0; i < NUMBER_OF_JOINTS; i++)
-	{
-		CommandedStiffness	[i]	=	(float) 0.0;//(float)200.0;
-		CommandedDamping	[i]	=	(float) 0.0;//(float)0.7;
-		CommandedTorquesInNm[i]	=	(float)0.0;
-	}
-
-	Robot->SetCommandedJointStiffness	(CommandedStiffness		);
-	Robot->SetCommandedJointDamping		(CommandedDamping		);
-	Robot->SetCommandedJointTorques		(CommandedTorquesInNm	);
+	fprintf(stdout, "RobotJointPositionController object created. Starting the robot...\n");
 
 	ResultValue	=	Robot->StartRobot();
 
@@ -140,11 +133,9 @@ int main(int argc, char *argv[])
 
 	fprintf(stdout, "Current system state:\n%s\n", Robot->GetCompleteRobotStateAndInformation());
 
-	Robot->GetMeasuredJointPositions(JointValuesInRad);
+	Robot->GetMeasuredJointPositions(InitialJointValuesInRad);
 
-	fprintf(stdout, "Performing joint impedance control for %.1f seconds.\n", RUN_TIME_IN_SECONDS);
-
-	while ((float)CycleCounter * Robot->GetCycleTime() < RUN_TIME_IN_SECONDS)
+	while (LoopVariable < 5.0 * PI)
 	{
 		Robot->WaitForKRCTick();
 
@@ -154,23 +145,17 @@ int main(int argc, char *argv[])
 			break;
 		}
 
-		Robot->GetMeasuredJointTorques		(MeasuredTorquesInNm	);
-		Robot->GetMeasuredJointPositions	(JointValuesInRad		);
-		/*fprintf(stdout,"\n");
-		fflush(stdout);
-		for (int i=0; i < NUMBER_OF_JOINTS; i++)
-		{
-			fprintf(stdout,"J[%d]=%f;",JointValuesInRad[i]);
-			fflush(stdout);
-		}
-		fprintf(stdout,"\n");
-		fflush(stdout);*/
-		Robot->SetCommandedJointPositions	(JointValuesInRad);
-		Robot->SetCommandedJointStiffness	(CommandedStiffness		);
-		Robot->SetCommandedJointDamping		(CommandedDamping		);
-		Robot->SetCommandedJointTorques		(CommandedTorquesInNm	);
+		FunctionValue	=	(float)(0.3 * sin(LoopVariable));
+		FunctionValue	*=	(float)FunctionValue;
 
-		CycleCounter++;
+		for (i = 0; i < NUMBER_OF_JOINTS; i++)
+		{
+			JointValuesInRad[i]	=	InitialJointValuesInRad[i] + FunctionValue;
+		}
+
+		Robot->SetCommandedJointPositions(JointValuesInRad);
+
+		LoopVariable	+=	(float)0.001;
 	}
 
 	fprintf(stdout, "Stopping the robot...\n");
@@ -178,7 +163,7 @@ int main(int argc, char *argv[])
 
 	if (ResultValue != EOK)
 	{
-		fprintf(stderr, "An error occurred during stopping the robot... ResultValue = %d\n", ResultValue);
+		fprintf(stderr, "An error occurred during stopping the robot...\n");
 	}
 	else
 	{
@@ -188,6 +173,8 @@ int main(int argc, char *argv[])
 	fprintf(stdout, "Deleting the object...\n");
 	delete Robot;
 	fprintf(stdout, "Object deleted...\n");
+
+
 
 	return(EXIT_SUCCESS);
 }
