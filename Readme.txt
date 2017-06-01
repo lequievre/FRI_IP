@@ -80,5 +80,5 @@ Once this file updated we need to reboot the KRC computer.
 For the right arm, we set the IP address to 192.168.100.120
 For the left one, we set the IP address to 192.168.100.102
 
-Of course, we have to take care of that in our script net file (In the ROS workspace -> ~/projects/ros_sigma_platform_fri_ws/src/script_net/net_kuka_sigma.sh)
+Of course, we have to take care of that in our net script file 'net_kuka_sigma.sh' (In 'script_net' directory).
 
