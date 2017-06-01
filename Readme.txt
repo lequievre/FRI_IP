@@ -82,3 +82,5 @@ For the left one, we set the IP address to 192.168.100.102
 
 Of course, we have to take care of that in our net script file 'net_kuka_sigma.sh' (In 'script_net' directory).
 
+Our tests files are in 'src/IP_Tests' directory.
+
