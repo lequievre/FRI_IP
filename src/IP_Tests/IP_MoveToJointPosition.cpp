@@ -35,6 +35,37 @@ void raz(float *tab, const int nb)
 	memset(tab,0x0,nb*sizeof(float));
 }
 
+void moveToPosition(FastResearchInterface *FRI, TypeIRML *RML, TypeIRMLInputParameters *IP, TypeIRMLOutputParameters *OP)
+{
+	int resultValue = TypeIRML::RML_WORKING;
+	
+	float jointValuesInRad[NUMBER_OF_JOINTS];
+
+    while ((FRI->IsMachineOK()) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
+    {
+        FRI->WaitForKRCTick();
+
+        resultValue	=	RML->GetNextMotionState_Position(*IP,OP);
+
+        if ((resultValue != TypeIRML::RML_WORKING) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
+        {
+            cout << "MoveToReasonableStartPosition(): ERROR during trajectory generation " << resultValue << endl;
+        }
+
+        for ( int i = 0; i < NUMBER_OF_JOINTS; i++)
+        {
+            jointValuesInRad[i] = RAD((double)(OP->NewPosition->VecData[i]));
+        }
+
+        FRI->SetCommandedJointPositions(jointValuesInRad);
+
+        *(IP->CurrentPosition) = *(OP->NewPosition);
+        *(IP->CurrentVelocity) = *(OP->NewVelocity);
+    }
+	
+}
+
+
 int main(int argc, char *argv[])
 {
 
@@ -102,53 +133,58 @@ int main(int argc, char *argv[])
     
    cout << "Moving to the a reasonable start position.." << endl;
 
-    FRI->GetMeasuredJointPositions(jointValuesInRad);
+   
     
-    /////////////////////////////////////////////////
-    double startingJointPosition[7];
-    startingJointPosition[0] = 0.0;//0.0;
-    startingJointPosition[1] = 27;//-24.5;
-    startingJointPosition[2] = 0.0;//0.0;
-    startingJointPosition[3] = -100;//-100.0;
-    startingJointPosition[4] = 0.0;//0.0;
-    startingJointPosition[5] = -27.5;//35.5;
-    startingJointPosition[6] = 0.0;//0.0;
-    /////////////////////////////////////////////////
-
-    for ( int i = 0; i < NUMBER_OF_JOINTS; i++)
+    
+    double targetJointPosition[7];
+    
+    for (int j=0; j<4; ++j)
     {
-        IP->CurrentPosition->VecData		[i] =	(double)DEG(jointValuesInRad[i]);
-        IP->TargetPosition->VecData			[i]	=	(double)startingJointPosition[i];
-        IP->MaxVelocity->VecData			[i] =	(double)50.0;
-        IP->MaxAcceleration->VecData		[i] =	(double)20.0;
-        IP->SelectionVector->VecData		[i] =	true;
-    }
+   
+		FRI->GetMeasuredJointPositions(jointValuesInRad);
+		 
+		targetJointPosition[0] = 0.0;
+		targetJointPosition[1] = 27;
+		targetJointPosition[2] = 0.0;
+		targetJointPosition[3] = -100;
+		targetJointPosition[4] = 0.0;
+		targetJointPosition[5] = -27.5;
+		targetJointPosition[6] = 0.0;
+		
 
-    resultValue	=	TypeIRML::RML_WORKING;
+		for ( int i = 0; i < NUMBER_OF_JOINTS; i++)
+		{
+			IP->CurrentPosition->VecData[i] = (double)DEG(jointValuesInRad[i]);
+			IP->TargetPosition->VecData[i]	= (double)targetJointPosition[i];
+			IP->MaxVelocity->VecData[i] = (double)50.0;
+			IP->MaxAcceleration->VecData[i] = (double)20.0;
+			IP->SelectionVector->VecData[i] = true;
+		}
 
-    while ((FRI->IsMachineOK()) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
-    {
-        FRI->WaitForKRCTick();
-
-        resultValue	=	RML->GetNextMotionState_Position(		*IP
-                                                            ,	OP	);
-
-        if ((resultValue != TypeIRML::RML_WORKING) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
-        {
-            cout << "MoveToReasonableStartPosition(): ERROR during trajectory generation " << resultValue << endl;
-        }
-
-        for ( int i = 0; i < NUMBER_OF_JOINTS; i++)
-        {
-            jointValuesInRad[i]	=	RAD((double)(OP->NewPosition->VecData[i]));
-        }
-
-        FRI->SetCommandedJointPositions(jointValuesInRad);
-
-        *(IP->CurrentPosition)		=	*(OP->NewPosition);
-        *(IP->CurrentVelocity)		=	*(OP->NewVelocity);
-    }
-
+		moveToPosition(FRI, RML, IP, OP);
+		
+		FRI->GetMeasuredJointPositions(jointValuesInRad);
+		
+		targetJointPosition[0] = 0.0;
+		targetJointPosition[1] = 1.55;
+		targetJointPosition[2] = 0.0;
+		targetJointPosition[3] = 0.0;
+		targetJointPosition[4] = 0.0;
+		targetJointPosition[5] = 0.0;
+		targetJointPosition[6] = 0.0;
+		
+		for ( int i = 0; i < NUMBER_OF_JOINTS; i++)
+		{
+			IP->CurrentPosition->VecData[i] = (double)DEG(jointValuesInRad[i]);
+			IP->TargetPosition->VecData[i]	= (double)DEG(targetJointPosition[i]);
+			IP->MaxVelocity->VecData[i] = (double)75.0;
+			IP->MaxAcceleration->VecData[i] = (double)50.0;
+			IP->SelectionVector->VecData[i] = true;
+		}
+		
+		moveToPosition(FRI, RML, IP, OP);
+	}
+    
     if (!FRI->IsMachineOK())
     {
         cout << "MoveToReasonableStartPosition(): ERROR, machine is not ready." << endl;
