@@ -21,6 +21,8 @@ ServerIP=192.168.100.253
 ServerPortNumber=49938
 
 Our platform needs these modifications because we have 2 kuka lwr4 + arms that have a port and a specific ip address.
+See the files 49938-FRI-Driver.init and 49939-FRI-Driver.init in directory 'etc'
+
 
 1- to compile with ubuntu 14.04 we need to install :
 sudo apt-get install g++-multilib
