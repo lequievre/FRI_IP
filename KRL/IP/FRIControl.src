@@ -1,5 +1,5 @@
 &ACCESS RVP
-&REL 79
+&REL 81
 DEF fricontrol( )
 ;FOLD Program information
     ;=====================================
@@ -197,6 +197,7 @@ REPEAT
     
         ; Apply a safety value of 1.0 and start the FRI
         RETURN_VALUE = friStart(1.0)
+        wait sec 0.2
         
         ;FOLD Screen output
             $MSG_T={MSG_T: VALID FALSE, RELEASE FALSE, TYP #NOTIFY, MODUL[] " ", KEY[] " ", PARAM_TYP #VALUE, PARAM[] " ", DLG_FORMAT[] " ", ANSWER 0} 
@@ -225,6 +226,7 @@ REPEAT
 	;ENDFOLD (Move to actual position)
 
         RETURN_VALUE = friStop()
+        wait sec 0.2
         
         ;FOLD Screen output
             $MSG_T={MSG_T: VALID FALSE, RELEASE FALSE, TYP #NOTIFY, MODUL[] " ", KEY[] " ", PARAM_TYP #VALUE, PARAM[] " ", DLG_FORMAT[] " ", ANSWER 0} 
