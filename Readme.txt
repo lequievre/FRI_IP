@@ -84,3 +84,21 @@ Of course, we have to take care of that in our net script file 'net_kuka_sigma.s
 
 Our tests files are in 'src/IP_Tests' directory.
 
+About Xenomai 3:
+================
+It is not possible to compile a "shared" library with the LD_FLAGS given by "xeno-config --posix --ldflags" tool.
+We need to use "xeno-config --posix --no-auto-init --ldflags"
+
+"--no-auto-init" option :
+-------------------------
+All Xenomai APIs but POSIX are based on the Copperplate library, which automatically initializes when the application process starts. --no-auto-init can be passed to disable such initialization. In such a case, the application code shall call the copperplate_init() routine manually, as part of its initialization chores on behalf on the main() routine, before any real-time service is invoked.
+
+This flag makes sense when passed along with --ldflags only. xeno-config enables the Copperplate auto-init feature by default.
+
+cf :
+https://xenomai.org/pipermail/xenomai/2016-September/036748.html
+https://www.mail-archive.com/search?l=xenomai@xenomai.org&q=subject:%22%5C%5BXenomai%5C%5D+Cannot+create+a+share+library+linked+against+Xenomai+libs%22&o=newest&f=1
+
+ 
+
+
