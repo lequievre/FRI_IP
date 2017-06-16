@@ -26,8 +26,8 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
 
-#find_package(Xenomai 2.6 COMPONENTS POSIX VXWORKS REQUIRED)
-#message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
+find_package(Xenomai 3.0 COMPONENTS POSIX REQUIRED)
+message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
 
 # FRIL version. Defined here but not exported to header files, because it's already defined there 
 set( FRIL_VERSION 1.2 )
@@ -54,7 +54,7 @@ find_package(Threads REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." OFF)
+option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." ON)
 
 if(ENABLE_XENO_POSIX AND Xenomai_POSIX_FOUND)
    set(FRIL_RT TRUE)
@@ -243,7 +243,7 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
   ########################
   # Test and examples
   ########################
-  OPTION(ENABLE_TESTS "Compilation of test and example programs" ON)
+  OPTION(ENABLE_TESTS "Compilation of test and example programs" OFF)
   if(ENABLE_TESTS)
   
     add_executable(fastResearchInterfaceTest ${FRIL_TEST_SRC})
@@ -292,7 +292,42 @@ if(FRIL_RT)
    message (STATUS "Added ${RTNET_INCLUDE_DIR} and ${Xenomai_POSIX_INCLUDE_DIRS} include dirs")
    message (STATUS "Added ${Xenomai_POSIX_LIBRARIES} libraries")
 
+   
+   message (STATUS "Xenomai_POSIX_LDFLAGS = ${Xenomai_POSIX_LDFLAGS}")
+   message (STATUS "FRIL_VERSION = ${FRIL_VERSION}")
+   message (STATUS "Xenomai_POSIX_LIBRARY_DIRS = ${Xenomai_POSIX_LIBRARY_DIRS}")
+   message (STATUS "Xenomai_POSIX_LIBRARIES = ${Xenomai_POSIX_LIBRARIES}")
+   
+   message (STATUS "XENO_POSIX_CFLAGS = ${XENO_POSIX_CFLAGS}") 
+   message (STATUS "FRIL_RT_DEFS = ${FRIL_RT_DEFS}")
+   message (STATUS "FRIL_RT_INCLUDES = ${FRIL_RT_INCLUDES}")
+
+  	# Add some specific options for Xenomai 3 ********************************************************************************************
+
+	# by adding the -MMD flag, we include automatically all the dependencies (like .h files).
+	# by adding the -g flag, we generate all debug informations.
+
+	#set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -MMD -g ${FRIL_RT_DEFS}")
+	#set(CMAKE_EXE_LINKER_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+	#message(STATUS "**** CMAKE_C_FLAGS = ${CMAKE_C_FLAGS}")
+	#message(STATUS "**** CMAKE_EXE_LINKER_FLAGS = ${CMAKE_EXE_LINKER_FLAGS}")
+
+	# enable c++11, (-Wall for all warnings ??)
+	#SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++0x -fpermissive")
+	#message(STATUS "**** CMAKE_CXX_FLAGS = ${CMAKE_CXX_FLAGS}")
+
+	#include_directories(${FRIL_RT_INCLUDES})
+
+	#add_definitions(-D_GNU_SOURCE -D_REENTRANT -D__COBALT__ -D__COBALT_WRAP__)
+	#link_directories("/usr/xenomai_3_0_2/lib")
+
    set (FRIL_TARGETS ${FRIL_TARGETS} fril_static_rt fril_dynamic_rt)
+   #set (FRIL_TARGETS ${FRIL_TARGETS} fril_static_rt)
+   message (STATUS "FRIL_TARGETS = ${FRIL_TARGETS}")
+
+   
+
    add_library(fril_static_rt STATIC ${FRIL_SRC} )
    target_link_libraries(fril_static_rt ${Xenomai_POSIX_LIBRARY_DIRS} ${Xenomai_POSIX_LIBRARIES})
    target_include_directories(fril_static_rt PUBLIC ${FRIL_RT_INCLUDES})
@@ -315,7 +350,7 @@ if(FRIL_RT)
       SOVERSION "${FRIL_VERSION_MAJOR}"
       OUTPUT_NAME FastResearchInterfaceLibrary_rt
       COMPILE_FLAGS "${FRIL_RT_DEFS}"
-      LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}"
+      LINK_FLAGS "-Wl,@/usr/xenomai_3_0_2/lib/cobalt.wrappers -L/usr/xenomai_3_0_2/lib -lcobalt -lpthread -lrt   "
       INSTALL_NAME_DIR "${CMAKE_INSTALL_LIBDIR}"
       CLEAN_DIRECT_OUTPUT 1)
 
@@ -353,6 +388,33 @@ if(FRIL_RT)
       set_target_properties( LWRLoggingExample_rt PROPERTIES
                      COMPILE_FLAGS "${FRIL_RT_DEFS}" 
                      LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+
+      add_executable(IP_LWRJointImpendanceControlExample_rt src/IP_Tests/IP_LWRJointImpedanceControlExample.cpp)
+      target_link_libraries(IP_LWRJointImpendanceControlExample_rt fril_dynamic_rt TypeIRML_dynamic)    
+      set_target_properties( IP_LWRJointImpendanceControlExample_rt PROPERTIES
+                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+      add_executable(IP_LWRJointPositionControlExample_rt src/IP_Tests/IP_LWRJointPositionControlExample.cpp)
+      target_link_libraries(IP_LWRJointPositionControlExample_rt fril_dynamic_rt TypeIRML_dynamic)    
+      set_target_properties( IP_LWRJointPositionControlExample_rt PROPERTIES
+                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+
+      add_executable(IP_MoveToJointPosition_rt src/IP_Tests/IP_MoveToJointPosition.cpp)
+      target_link_libraries(IP_MoveToJointPosition_rt fril_dynamic_rt TypeIRML_dynamic)    
+      set_target_properties( IP_MoveToJointPosition_rt PROPERTIES
+                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+      add_executable(IP_TestSwitchControl_rt src/IP_Tests/IP_TestSwitchControl.cpp)
+      target_link_libraries(IP_TestSwitchControl_rt fril_dynamic_rt TypeIRML_dynamic)    
+      set_target_properties( IP_TestSwitchControl_rt PROPERTIES
+                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
       
       install(TARGETS fastResearchInterfaceTest_rt LWRCartImpedanceControlExample_rt
             LWRJointImpedanceControlExample_rt LWRJointPositionControlExample_rt
