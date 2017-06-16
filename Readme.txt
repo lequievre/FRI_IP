@@ -99,6 +99,18 @@ cf :
 https://xenomai.org/pipermail/xenomai/2016-September/036748.html
 https://www.mail-archive.com/search?l=xenomai@xenomai.org&q=subject:%22%5C%5BXenomai%5C%5D+Cannot+create+a+share+library+linked+against+Xenomai+libs%22&o=newest&f=1
 
+To resolve LD_LIBRARY_PATH with xenomai libraries:
+--------------------------------------------------
+
+1- Add a conf file in the directory /etc/ld.so.conf.d
+for example xenomai_3_0_2.conf that contains :
+# xenomai 3.0.2 conf
+/usr/xenomai_3_0_2/lib
+
+2- After that, launch the command : sudo ldconfig
+
+
+
  
 
 
