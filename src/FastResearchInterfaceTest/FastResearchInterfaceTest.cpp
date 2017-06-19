@@ -57,8 +57,8 @@
 #include <FastResearchInterfaceTest.h>
 #include <ctype.h> // need for toupper
 
-#define RIGHT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init"
-#define LEFT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49939-FRI-Driver.init"
+#define RIGHT_INIT_FILE "/home/ifma/git_project/FRI_IP/etc/49938-FRI-Driver.init"
+#define LEFT_INIT_FILE "/home/ifma/git_project/FRI_IP/etc/49939-FRI-Driver.init"
 
 #ifndef PI
 #define PI	3.1415926535897932384626433832795

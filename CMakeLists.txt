@@ -243,7 +243,7 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
   ########################
   # Test and examples
   ########################
-  OPTION(ENABLE_TESTS "Compilation of test and example programs" OFF)
+  OPTION(ENABLE_TESTS "Compilation of test and example programs" ON)
   if(ENABLE_TESTS)
   
     add_executable(fastResearchInterfaceTest ${FRIL_TEST_SRC})
@@ -259,7 +259,19 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
     target_link_libraries(LWRJointPositionControlExample fril_dynamic TypeIRML_dynamic )
     
     add_executable(LWRLoggingExample src/LWRGettingStartedExamples/LWRLoggingExample.cpp)
-    target_link_libraries(LWRLoggingExample fril_dynamic TypeIRML_dynamic)    
+    target_link_libraries(LWRLoggingExample fril_dynamic TypeIRML_dynamic) 
+
+    add_executable(IP_LWRJointImpendanceControlExample src/IP_Tests/IP_LWRJointImpedanceControlExample.cpp)
+    target_link_libraries(IP_LWRJointImpendanceControlExample fril_dynamic TypeIRML_dynamic)    
+     
+    add_executable(IP_LWRJointPositionControlExample src/IP_Tests/IP_LWRJointPositionControlExample.cpp)
+    target_link_libraries(IP_LWRJointPositionControlExample fril_dynamic TypeIRML_dynamic)    
+      
+    add_executable(IP_MoveToJointPosition src/IP_Tests/IP_MoveToJointPosition.cpp)
+    target_link_libraries(IP_MoveToJointPosition fril_dynamic TypeIRML_dynamic)    
+      
+    add_executable(IP_TestSwitchControl src/IP_Tests/IP_TestSwitchControl.cpp)
+    target_link_libraries(IP_TestSwitchControl fril_dynamic TypeIRML_dynamic)    
    
     install(TARGETS fastResearchInterfaceTest LWRCartImpedanceControlExample
 		    LWRJointImpedanceControlExample LWRJointPositionControlExample
@@ -267,9 +279,6 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
    	    RUNTIME DESTINATION bin)
   endif(ENABLE_TESTS)
 
- 
-      
- 
 # include_directories(${Xenomai_POSIX_INCLUDE_DIR})
 # add_executable(demo_xeno ${XENO_EXAMPLE_SRC})
 # target_link_libraries(demo_xeno ${Xenomai_POSIX_LIBRARY_DIRS} ${Xenomai_POSIX_LIBRARIES})
@@ -350,7 +359,8 @@ if(FRIL_RT)
       SOVERSION "${FRIL_VERSION_MAJOR}"
       OUTPUT_NAME FastResearchInterfaceLibrary_rt
       COMPILE_FLAGS "${FRIL_RT_DEFS}"
-      LINK_FLAGS "-Wl,@/usr/xenomai_3_0_2/lib/cobalt.wrappers -L/usr/xenomai_3_0_2/lib -lcobalt -lpthread -lrt   "
+      #LINK_FLAGS "-Wl,@/usr/xenomai_3_0_2/lib/cobalt.wrappers -L/usr/xenomai_3_0_2/lib -lcobalt -lpthread -lrt   "
+      LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}"
       INSTALL_NAME_DIR "${CMAKE_INSTALL_LIBDIR}"
       CLEAN_DIRECT_OUTPUT 1)
 
@@ -406,6 +416,13 @@ if(FRIL_RT)
       add_executable(IP_MoveToJointPosition_rt src/IP_Tests/IP_MoveToJointPosition.cpp)
       target_link_libraries(IP_MoveToJointPosition_rt fril_dynamic_rt TypeIRML_dynamic)    
       set_target_properties( IP_MoveToJointPosition_rt PROPERTIES
+                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
+
+      add_executable(IP_MoveToJointPosition_rt_static src/IP_Tests/IP_MoveToJointPosition.cpp)
+      target_link_libraries(IP_MoveToJointPosition_rt_static fril_static_rt TypeIRML_static)    
+      set_target_properties( IP_MoveToJointPosition_rt_static PROPERTIES
                      COMPILE_FLAGS "${FRIL_RT_DEFS}" 
                      LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
 
