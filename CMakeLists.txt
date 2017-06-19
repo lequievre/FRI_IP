@@ -243,7 +243,7 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
   ########################
   # Test and examples
   ########################
-  OPTION(ENABLE_TESTS "Compilation of test and example programs" ON)
+  OPTION(ENABLE_TESTS "Compilation of test and example programs" OFF)
   if(ENABLE_TESTS)
   
     add_executable(fastResearchInterfaceTest ${FRIL_TEST_SRC})
