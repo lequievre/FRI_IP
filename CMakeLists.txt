@@ -412,26 +412,28 @@ if(FRIL_RT)
                      COMPILE_FLAGS "${FRIL_RT_DEFS}" 
                      LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
 
+      add_executable(IP_TestSwitchControl_rt src/IP_Tests/IP_TestSwitchControl.cpp)
+      target_link_libraries(IP_TestSwitchControl_rt fril_dynamic_rt TypeIRML_dynamic)    
+     # set_target_properties( IP_TestSwitchControl_rt PROPERTIES
+     #                COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+     #                LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+
 
       add_executable(IP_MoveToJointPosition_rt src/IP_Tests/IP_MoveToJointPosition.cpp)
       target_link_libraries(IP_MoveToJointPosition_rt fril_dynamic_rt TypeIRML_dynamic)    
-      set_target_properties( IP_MoveToJointPosition_rt PROPERTIES
-                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
-                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+      #set_target_properties( IP_MoveToJointPosition_rt PROPERTIES
+      #               COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+      #               LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
 
 
       add_executable(IP_MoveToJointPosition_rt_static src/IP_Tests/IP_MoveToJointPosition.cpp)
       target_link_libraries(IP_MoveToJointPosition_rt_static fril_static_rt TypeIRML_static)    
-      set_target_properties( IP_MoveToJointPosition_rt_static PROPERTIES
-                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
-                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
+      #set_target_properties( IP_MoveToJointPosition_rt_static PROPERTIES
+      #               COMPILE_FLAGS "${FRIL_RT_DEFS}" 
+      #               LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
 
-      add_executable(IP_TestSwitchControl_rt src/IP_Tests/IP_TestSwitchControl.cpp)
-      target_link_libraries(IP_TestSwitchControl_rt fril_dynamic_rt TypeIRML_dynamic)    
-      set_target_properties( IP_TestSwitchControl_rt PROPERTIES
-                     COMPILE_FLAGS "${FRIL_RT_DEFS}" 
-                     LINK_FLAGS "${Xenomai_POSIX_LDFLAGS}")
-
+      message(STATUS "FRIL_RT_DEFS = ${FRIL_RT_DEFS}")
+      message(STATUS "Xenomai_POSIX_LDFLAGS = ${Xenomai_POSIX_LDFLAGS}")
       
       install(TARGETS fastResearchInterfaceTest_rt LWRCartImpedanceControlExample_rt
             LWRJointImpedanceControlExample_rt LWRJointPositionControlExample_rt

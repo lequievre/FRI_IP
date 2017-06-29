@@ -1,24 +1,30 @@
 #include <FastResearchInterface.h>
-//#include <OSAbstraction.h> // need for WaitForKBCharacter
+#include <TypeIRML.h>
+#include <OSAbstraction.h> // need for WaitForKBCharacter
 #include <iostream>
 #include <string>
 #include <algorithm>
 #include <math.h>
 #include <cstring> // need for memset
 
-//#include <unistd.h>
+#ifndef PI
+	#define PI 3.1415926535897932384626433832795
+#endif
 
+#ifndef RAD
+	#define RAD(A)	((A) * PI / 180.0 )
+#endif
+
+#ifndef DEG
+	#define DEG(A)	((A) * 180.0 / PI )
+#endif
 
 #ifndef NUMBER_OF_JOINTS
 	#define NUMBER_OF_JOINTS 7
 #endif
 
-#ifndef PI
-	#define PI	3.1415926535897932384626433832795
-#endif
-
-#define RIGHT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49938-FRI-Driver.init"
-#define LEFT_INIT_FILE "/home/ifma/projects/ros_sigma_platform_fri_ws/src/single_lwr_robot/config/49939-FRI-Driver.init"
+#define RIGHT_INIT_FILE "/home/ifma/git_project/FRI_IP/etc/49938-FRI-Driver.init"
+#define LEFT_INIT_FILE "/home/ifma/git_project/FRI_IP/etc/49939-FRI-Driver.init"
 
 #define RUN_TIME_IN_SECONDS 5.0
 
@@ -34,7 +40,7 @@ void raz(float *tab, const int nb)
 int main(int argc, char *argv[])
 {
 
-	/*if (argc > 1)
+	if (argc > 1)
 	{
 		robotType = string(argv[1]);
 		std::transform(robotType.begin(), robotType.end(),robotType.begin(), ::toupper);
@@ -73,7 +79,7 @@ int main(int argc, char *argv[])
 	raz(commandedStiffness,NUMBER_OF_JOINTS);
 	raz(commandedDamping,NUMBER_OF_JOINTS);
 
-*/
+
 
 	/*for (size_t i = 0; i < NUMBER_OF_JOINTS; i++)
 	{
@@ -84,13 +90,13 @@ int main(int argc, char *argv[])
 	FRI->SetCommandedJointDamping(jointDampingValues);
 	FRI->SetCommandedJointStiffness(jointStiffnessValues);
 	*/
-	/*
+	
 	int resultValue	= 0;
 	char c;
 	
 	cout << "\nPlease press any key..." << endl;
 
-	//c = WaitForKBCharacter(NULL);
+	c = WaitForKBCharacter(NULL);
 
 	unsigned int controlScheme = FastResearchInterface::JOINT_POSITION_CONTROL;
 
@@ -158,7 +164,7 @@ int main(int argc, char *argv[])
 	
 	cout << "\nPlease press any key..." << endl;
 
-	//c = WaitForKBCharacter(NULL);
+	c = WaitForKBCharacter(NULL);
 	
 	controlScheme = FastResearchInterface::JOINT_IMPEDANCE_CONTROL;
 	
@@ -225,7 +231,7 @@ int main(int argc, char *argv[])
 	
 	cout << "\nPlease press any key..." << endl;
 
-	//c = WaitForKBCharacter(NULL);
+	c = WaitForKBCharacter(NULL);
 	
 	controlScheme = FastResearchInterface::JOINT_POSITION_CONTROL;
 
@@ -293,7 +299,7 @@ int main(int argc, char *argv[])
 	
 	cout << "\nDeleting the object..." << endl;
 	
-	delete FRI;*/
+	delete FRI;
 	
 	cout << "\nObject deleted..." << endl;
 	
