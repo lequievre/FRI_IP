@@ -26,8 +26,8 @@ include(CMakePackageConfigHelpers)
 
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
 
-#find_package(Xenomai 3.0 COMPONENTS POSIX REQUIRED)
-#message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
+find_package(Xenomai 2.6 COMPONENTS POSIX REQUIRED)
+message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
 
 # FRIL version. Defined here but not exported to header files, because it's already defined there 
 set( FRIL_VERSION 1.2 )
@@ -54,7 +54,7 @@ find_package(Threads REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." OFF)
+option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." ON)
 
 if(ENABLE_XENO_POSIX AND Xenomai_POSIX_FOUND)
    set(FRIL_RT TRUE)
@@ -243,7 +243,7 @@ set_target_properties( TypeIRML_dynamic PROPERTIES
   ########################
   # Test and examples
   ########################
-  OPTION(ENABLE_TESTS "Compilation of test and example programs" OFF)
+  OPTION(ENABLE_TESTS "Compilation of test and example programs" ON)
   if(ENABLE_TESTS)
   
     add_executable(fastResearchInterfaceTest ${FRIL_TEST_SRC})

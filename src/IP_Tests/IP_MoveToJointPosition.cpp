@@ -35,17 +35,58 @@ void raz(float *tab, const int nb)
 	memset(tab,0x0,nb*sizeof(float));
 }
 
+
+void moveWithSin(FastResearchInterface *FRI)
+{
+
+	float		FunctionValue	=	0.0
+		,	LoopVariable	=	0.0
+		,	JointValuesInRad[NUMBER_OF_JOINTS]
+                ,	InitialJointValuesInRad[NUMBER_OF_JOINTS];
+
+	int i;
+
+       FRI->GetMeasuredJointPositions(InitialJointValuesInRad);
+
+
+	while (LoopVariable < 5.0 * PI)
+	{
+		FRI->WaitForKRCTick();
+
+		if (!FRI->IsMachineOK())
+		{
+			fprintf(stderr, "ERROR, the machine is not ready anymore.\n");
+			break;
+		}
+
+		FunctionValue	=	(float)(0.3 * sin(LoopVariable));
+		FunctionValue	*=	(float)FunctionValue;
+
+		for (i = 0; i < NUMBER_OF_JOINTS; i++)
+		{
+			JointValuesInRad[i]	=	InitialJointValuesInRad[i] + FunctionValue;
+		}
+
+		FRI->SetCommandedJointPositions(JointValuesInRad);
+
+		LoopVariable	+=	(float)0.001;
+	}
+
+}
+
 void moveToPosition(FastResearchInterface *FRI, TypeIRML *RML, TypeIRMLInputParameters *IP, TypeIRMLOutputParameters *OP)
 {
 	int resultValue = TypeIRML::RML_WORKING;
 	
 	float jointValuesInRad[NUMBER_OF_JOINTS];
 
+
     while ((FRI->IsMachineOK()) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
     {
         FRI->WaitForKRCTick();
 
         resultValue	=	RML->GetNextMotionState_Position(*IP,OP);
+
 
         if ((resultValue != TypeIRML::RML_WORKING) && (resultValue != TypeIRML::RML_FINAL_STATE_REACHED))
         {
@@ -57,10 +98,12 @@ void moveToPosition(FastResearchInterface *FRI, TypeIRML *RML, TypeIRMLInputPara
             jointValuesInRad[i] = RAD((double)(OP->NewPosition->VecData[i]));
         }
 
+
         FRI->SetCommandedJointPositions(jointValuesInRad);
 
         *(IP->CurrentPosition) = *(OP->NewPosition);
         *(IP->CurrentVelocity) = *(OP->NewVelocity);
+
     }
 	
 }
@@ -112,8 +155,9 @@ int main(int argc, char *argv[])
 
 	cout << "Result of Start Robot = " << resultValue << endl;
 	
+    
 	
-	float jointValuesInRad[NUMBER_OF_JOINTS];
+    float jointValuesInRad[NUMBER_OF_JOINTS];
 
     double cycleTime = 0.002;
 
@@ -131,11 +175,8 @@ int main(int argc, char *argv[])
 
     raz(jointValuesInRad,NUMBER_OF_JOINTS);
     
-   cout << "Moving to the a reasonable start position.." << endl;
+    cout << "Moving to the a reasonable start position.." << endl;
 
-   
-    
-    
     double targetJointPosition[7];
     
     for (int j=0; j<4; ++j)
@@ -183,7 +224,10 @@ int main(int argc, char *argv[])
 		}
 		
 		moveToPosition(FRI, RML, IP, OP);
-	}
+    }
+
+
+    moveWithSin(FRI);
     
     if (!FRI->IsMachineOK())
     {
@@ -196,10 +240,12 @@ int main(int argc, char *argv[])
 	{
 		cout << "\nAn error occurred during stopping the robot..." << endl;
 	}
-	
-	delete	RML;
+   
+    delete	RML;
     delete	IP;
     delete	OP;
+
+  
 	
 	cout << "\nPlease press any key..." << endl;
 
