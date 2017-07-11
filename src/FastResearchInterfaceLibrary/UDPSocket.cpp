@@ -153,6 +153,7 @@ void UDPSocket::Init(void)
 	memset(&this->IPAddressOfKRCUnit	, 0,	sizeof(this->IPAddressOfKRCUnit		));
 	
 	UDPSocketNumber = socket(PF_INET, SOCK_DGRAM, 0);
+        //UDPSocketNumber = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	
 	if (UDPSocketNumber < 0)
 	{

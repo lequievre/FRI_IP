@@ -27,6 +27,7 @@ include(CMakePackageConfigHelpers)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
 
 find_package(Xenomai 2.6 COMPONENTS POSIX REQUIRED)
+
 message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
 
 # FRIL version. Defined here but not exported to header files, because it's already defined there 
