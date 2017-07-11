@@ -163,10 +163,13 @@ if(Xenomai_XENO_CONFIG)
       message(STATUS "Xenomai_${SKINU}_INCLUDE_DIRS = ${Xenomai_${SKINU}_INCLUDE_DIRS}")
       message(STATUS "Xenomai_${SKINU}_DEFINITIONS = ${Xenomai_${SKINU}_DEFINITIONS}")
 
-      #execute_process(COMMAND ${Xenomai_XENO_CONFIG}  --skin ${_skin} --auto-init-solib --ldflags OUTPUT_VARIABLE XENO_${SKINU}_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-      execute_process(COMMAND ${Xenomai_XENO_CONFIG}  --skin ${_skin} --ldflags OUTPUT_VARIABLE XENO_${SKINU}_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+      if(Xenomai_VERSION VERSION_GREATER 2.6.5)
+        message(STATUS "Xenomai version > 2.6.5 -> --auto-init-solib flags !")
+      	execute_process(COMMAND ${Xenomai_XENO_CONFIG}  --skin ${_skin} --auto-init-solib --ldflags OUTPUT_VARIABLE XENO_${SKINU}_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
+      else()
+      	execute_process(COMMAND ${Xenomai_XENO_CONFIG}  --skin ${_skin} --ldflags OUTPUT_VARIABLE XENO_${SKINU}_LDFLAGS OUTPUT_STRIP_TRAILING_WHITESPACE)
       PARSE_LDFLAGS("XENO_${SKINU}_LDFLAGS" "Xenomai_${SKINU}_LIBRARIES" "Xenomai_${SKINU}_LDFLAGS" "Xenomai_${SKINU}_LIBRARY_DIRS")
+      endif()
 
       message(STATUS "Xenomai_${SKINU}_LIBRARIES = ${Xenomai_${SKINU}_LIBRARIES}")
       message(STATUS "Xenomai_${SKINU}_DIRS = ${Xenomai_${SKINU}_LIBRARY_DIRS}")
