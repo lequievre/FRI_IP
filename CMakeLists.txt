@@ -24,11 +24,16 @@ project(FRIL)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
+set(USE_XENOMAI_VERSION false)
 
-find_package(Xenomai 2.6 COMPONENTS POSIX REQUIRED)
+if ( USE_XENOMAI_VERSION )
 
-message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
+	set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake-modules)
+
+	find_package(Xenomai 2.6 COMPONENTS POSIX REQUIRED)
+
+	message(STATUS "Xenomai found with theses skins: ${Xenomai_SKINS}")
+endif()
 
 # FRIL version. Defined here but not exported to header files, because it's already defined there 
 set( FRIL_VERSION 1.2 )
@@ -55,7 +60,13 @@ find_package(Threads REQUIRED)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 
-option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." ON)
+if ( USE_XENOMAI_VERSION )
+
+	option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." ON)
+else()
+	option(ENABLE_XENO_POSIX "Enable Xenomai POSIX version." OFF)
+
+endif()
 
 if(ENABLE_XENO_POSIX AND Xenomai_POSIX_FOUND)
    set(FRIL_RT TRUE)
